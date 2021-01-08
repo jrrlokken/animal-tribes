@@ -1,24 +1,32 @@
-console.log('Try npm run lint/fix!');
+import 'module-alias/register'
+import * as express from 'express'
+import { graphqlHTTP } from 'express-graphql'
+import * as cors from 'cors'
 
-const longString =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut aliquet diam.';
+import schema from './graphql/schema'
+import config from './config'
 
-const trailing = 'Semicolon';
+import { connectDb } from './db'
 
-const why = 'am I tabbed?';
+const app = express()
+const expressPlayground = require('graphql-playground-middleware-express')
+  .default
 
-export function doSomeStuff(
-  withThis: string,
-  andThat: string,
-  andThose: string[]
-) {
-  //function on one line
-  if (!andThose.length) {
-    return false;
-  }
-  console.log(withThis);
-  console.log(andThat);
-  console.dir(andThose);
-  return;
-}
-// TODO: more examples
+connectDb()
+
+app.use(cors())
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+  })
+)
+
+app.get('/playground', expressPlayground({ endpoint: '/graphql' }))
+
+app.listen(config.serverPort, () => {
+  console.log(`Server listening for requests on port ${config.serverPort}`)
+})
+
+export default app
