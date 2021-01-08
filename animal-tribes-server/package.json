@@ -1,29 +1,30 @@
 {
   "name": "animal-tribes-server",
   "version": "1.0.0",
+  "main": "build/index.js",
+  "license": "MIT",
   "description": "An MMORPG of Humanoid animals",
-  "main": "build/src/index.js",
-  "types": "build/src/index.d.ts",
-  "files": [
-    "build/src"
-  ],
-  "license": "Apache-2.0",
-  "keywords": [],
+  "repository": "https://github.com:jrrlokken/animal-tribes",
+  "author": "Joshua Lokken",
+  "_moduleAliases": {
+    "@local": "./build/src"
+  },
   "scripts": {
-    "start": "concurrently --kill-others 'npm run tsc:watch' 'npm run dev'",
+    "start": "node build/src/index.js",
+    "start:dev": "concurrently --kill-others 'npm run tsc:watch' 'npm run dev'",
     "dev": "nodemon build/src/index.js",
-    "test": "NODE_ENV='test' mocha build/src/tests/*.test.js --exit",
-    "script": "ts-node",
     "lint": "npx tslint --init",
-    "clean": "gts clean",
-    "check": "gts check",
-    "compile": "tsc -p",
-    "fix": "gts fix",
     "tsc": "./node_modules/.bin/tsc",
     "tsc:watch": "./node_modules/.bin/tsc -w",
+    "clean": "gts clean",
+    "check": "gts check",
+    "compile": "tsc -p .",
+    "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
-    "posttest": "npm run lint"
+    "posttest": "npm run lint",
+    "test": "NODE_ENV='test' mocha build/src/tests/*.test.js --exit",
+    "script": "ts-node"
   },
   "devDependencies": {
     "@types/node": "^14.14.20",
